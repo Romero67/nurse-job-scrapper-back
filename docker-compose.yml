@@ -19,8 +19,6 @@ services:
     depends_on:
       mongodb:
         condition: service_healthy # Espera a que MongoDB esté saludable
-      redis:
-        condition: service_started # Solo espera que Redis se inicie
     networks:
       - nurse-network
 
@@ -41,22 +39,10 @@ services:
     networks:
       - nurse-network
 
-  # Servicio de Redis
-  redis:
-    image: redis:7.0-alpine # Usa una versión ligera de Redis
-    container_name: nurse-scrapper-redis
-    ports:
-      - '6379:6379' # Mapea el puerto 6379 del host al puerto 6379 del contenedor
-    command: ['redis-server', '--appendonly', 'yes'] # Habilita la persistencia AOF para Redis
-    volumes:
-      - redis_data:/data # Persistencia de datos para Redis
-    networks:
-      - nurse-network
-
 volumes:
   mongodb_data: # Define el volumen para MongoDB
   redis_data: # Define el volumen para Redis
 
-networks: # 👈 AGREGA ESTO
+networks:
   nurse-network:
     driver: bridge

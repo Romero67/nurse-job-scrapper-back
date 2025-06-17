@@ -6,7 +6,9 @@ export class ScrapperController {
   constructor(private readonly scrapperService: ScrapperService) {}
 
   @Get('/last-update')
-  async getLastUpdate(): Promise<string> {
-    return this.scrapperService.getLastUpdate();
+  async getLastUpdate(): Promise<{ date: string }> {
+    return {
+      date: await this.scrapperService.getLastUpdate(),
+    };
   }
 }

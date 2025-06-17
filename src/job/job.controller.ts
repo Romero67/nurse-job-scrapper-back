@@ -9,13 +9,13 @@ export class JobController {
   async findAll(
     @Query('title') title?: string,
     @Query('company') company?: string,
-    @Query('locality') locality?: string,
+    @Query('location') location?: string,
     @Query('sort') sort?: string,
     @Query('skip') skip?: string,
     @Query('limit') limit?: string,
   ) {
-    const skipNum = skip ? parseInt(skip, 10) : 0;
-    const limitNum = limit ? parseInt(limit, 10) : 10;
+    const skipNum = skip ? parseInt(skip, 20) : 0;
+    const limitNum = limit ? parseInt(limit, 20) : 20;
 
     // Validate skip and limit
     if (isNaN(skipNum) || skipNum < 0) {
@@ -29,7 +29,7 @@ export class JobController {
     const result = await this.jobService.findAll(
       title,
       company,
-      locality,
+      location,
       sort,
       skipNum,
       limitNum,

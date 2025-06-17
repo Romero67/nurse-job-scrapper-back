@@ -19,7 +19,7 @@ export class JobService {
   async findAll(
     title?: string,
     company?: string,
-    locality?: string,
+    location?: string,
     sort?: string,
     skip: number = 0,
     limit: number = 10,
@@ -36,8 +36,13 @@ export class JobService {
       searchQuery['organization.name'] = { $regex: company, $options: 'i' };
     }
 
-    if (locality) {
-      searchQuery['location.locality'] = { $regex: locality, $options: 'i' };
+    if (location) {
+      searchQuery.$or = [
+        { 'location.street': { $regex: location, $options: 'i' } },
+        { 'location.locality': { $regex: location, $options: 'i' } },
+        { 'location.region': { $regex: location, $options: 'i' } },
+        { 'location.country': { $regex: location, $options: 'i' } },
+      ];
     }
 
     // Build sort options
