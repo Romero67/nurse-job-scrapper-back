@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  # Servicio de la aplicación Node.js (NestJS Scrapper)
+  nurse-scrapper:
+    build:
+      context: . # El contexto es el directorio actual donde está el Dockerfile
+      dockerfile: Dockerfile # Especifica el nombre del Dockerfile
+    container_name: nurse-scrapper-app
+    env_file: .env
+    ports:
+      - '3000:3000' # Mapea el puerto 3000 del host al puerto 3000 del contenedor
+    volumes:
+      - ./src:/usr/src/app/src # Mapea el código fuente para hot reload
+      - ./package.json:/usr/src/app/package.json
+      - ./tsconfig.json:/usr/src/app/tsconfig.json
+      - ./nest-cli.json:/usr/src/app/nest-cli.json
+      - /usr/src/app/node_modules # Preserva node_modules del contenedor
+    depends_on:
+      mongodb:
+        condition: service_healthy # Espera a que MongoDB esté saludable
+      redis:
+        condition: service_started # Solo espera que Redis se inicie
+    networks:
+      - nurse-network
+
+  # Servicio de MongoDB
+  mongodb:
+    image: mongo:6.0 # Usa una versión específica de MongoDB
+    container_name: nurse-scrapper-mongodb
+    ports:
+      - '27017:27017' # Mapea el puerto 27017 del host al puerto 27017 del contenedor
+    volumes:
+      - mongodb_data:/data/db # Persistencia de datos para MongoDB
+    healthcheck:
+      test: ['CMD', 'mongosh', '--eval', "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - nurse-network
+
+  # Servicio de Redis
+  redis:
+    image: redis:7.0-alpine # Usa una versión ligera de Redis
+    container_name: nurse-scrapper-redis
+    ports:
+      - '6379:6379' # Mapea el puerto 6379 del host al puerto 6379 del contenedor
+    command: ['redis-server', '--appendonly', 'yes'] # Habilita la persistencia AOF para Redis
+    volumes:
+      - redis_data:/data # Persistencia de datos para Redis
+    networks:
+      - nurse-network
+
+volumes:
+  mongodb_data: # Define el volumen para MongoDB
+  redis_data: # Define el volumen para Redis
+
+networks: # 👈 AGREGA ESTO
+  nurse-network:
+    driver: bridge
