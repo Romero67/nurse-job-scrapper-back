@@ -1,99 +1,256 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 🏥 Nurse Job Scrapper
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Un scrapper de trabajos de enfermería construido con NestJS, MongoDB y Docker. Esta aplicación extrae ofertas de trabajo para enfermeras/os una web y proporciona una API REST para consultar y filtrar los resultados.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 🚀 Características
 
-## Description
+- **Web Scrapping**: Extrae automáticamente ofertas de trabajo de enfermería
+- **API REST**: Endpoints para consultar y filtrar trabajos
+- **Filtros Avanzados**: Búsqueda por título, empresa y ubicación
+- **Paginación**: Resultados paginados para mejor rendimiento
+- **Ordenamiento**: Múltiples opciones de ordenamiento
+- **Documentación Swagger**: API documentada automáticamente
+- **Base de Datos**: Persistencia con MongoDB
+- **Dockerizado**: Fácil despliegue con Docker
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 🛠️ Tecnologías
 
-## Project setup
+- **NestJS** - Framework de Node.js
+- **MongoDB** - Base de datos NoSQL
+- **Mongoose** - ODM para MongoDB
+- **Puppeteer** - Web scrapping
+- **Swagger** - Documentación de API
+- **Docker** - Contenedorización
+- **TypeScript** - Lenguaje de programación
 
-```bash
-$ npm install
-```
+## 📋 Prerrequisitos
 
-## Compile and run the project
+- Docker
+- Docker Compose
 
-```bash
-# development
-$ npm run start
+## 🚀 Instalación y Ejecución
 
-# watch mode
-$ npm run start:dev
+### Usando Docker (Recomendado)
 
-# production mode
-$ npm run start:prod
-```
+1. **Clonar el repositorio**
+   ```bash
+   git clone <repository-url>
+   cd nurse-job-scrapper
+   ```
 
-## Run tests
+2. **Crear archivo de variables de entorno**
+   ```bash
+   cp .env.example .env
+   ```
+   Edita el archivo `.env` con tus configuraciones.
 
-```bash
-# unit tests
-$ npm run test
+3. **Construir y ejecutar con Docker Compose**
+   ```bash
+   docker compose up --build
+   ```
 
-# e2e tests
-$ npm run test:e2e
+4. **¡Listo!** 🎉
+   - API: http://localhost:3000
+   - Swagger UI: http://localhost:3000/api
+   - MongoDB: localhost:27017
 
-# test coverage
-$ npm run test:cov
-```
+### Desarrollo Local
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+Si prefieres ejecutar sin Docker:
 
 ```bash
-$ npm install -g mau
-$ mau deploy
+# Instalar dependencias
+npm install
+
+# Ejecutar en modo desarrollo
+npm run start:dev
+
+# Ejecutar en modo producción
+npm run start:prod
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+## 🔗 API Endpoints
 
-## Resources
+### Trabajos
 
-Check out a few resources that may come in handy when working with NestJS:
+#### `GET /job` - Obtener trabajos con filtros opcionales
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+**Query Parameters:**
+- `title` (opcional): Filtrar por título del trabajo
+- `company` (opcional): Filtrar por nombre de la empresa
+- `location` (opcional): Filtrar por ubicación (calle, ciudad, región, país)
+- `sort` (opcional): Ordenar por:
+  - `title` / `title_desc`: Por título
+  - `date` / `date_asc`: Por fecha de publicación
+  - `salary` / `salary_asc`: Por salario
+  - `company`: Por empresa
+  - `location`: Por ubicación
+- `skip` (opcional): Número de registros a omitir (paginación)
+- `limit` (opcional): Número de registros a devolver (máx. 100)
 
-## Support
+**Ejemplos:**
+```bash
+# Obtener todos los trabajos
+GET /job
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+# Buscar trabajos de enfermería pediátrica
+GET /job?title=pediatric
 
-## Stay in touch
+# Buscar trabajos en Madrid
+GET /job?location=madrid
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+# Buscar trabajos en hospitales ordenados por salario
+GET /job?company=hospital&sort=salary
 
-## License
+# Búsqueda combinada con paginación
+GET /job?title=nurse&location=barcelona&sort=date&skip=0&limit=20
+```
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+**Respuesta:**
+```json
+{
+  "data": [
+    {
+      "_id": "...",
+      "title": "Registered Nurse - Pediatrics",
+      "description": "...",
+      "organization": {
+        "name": "General Hospital",
+        "url": "..."
+      },
+      "location": {
+        "street": "123 Main St",
+        "locality": "Madrid",
+        "region": "Madrid",
+        "country": "Spain"
+      },
+      "salary": {
+        "currency": "EUR",
+        "amount": 35000,
+        "unit": "YEAR"
+      },
+      "datePosted": "2024-01-15T10:30:00Z",
+      "createdAt": "2024-01-15T10:30:00Z",
+      "updatedAt": "2024-01-15T10:30:00Z"
+    }
+  ],
+  "pagination": {
+    "skip": 0,
+    "limit": 20,
+    "total": 150,
+    "hasNext": true,
+    "hasPrev": false
+  }
+}
+```
+
+### Scrapper
+
+#### `GET /scrapper/last-update` - Obtener fecha de última actualización
+
+**Respuesta:**
+```json
+{
+  "date": "2024-01-15T10:30:00Z"
+}
+```
+
+## 📊 Documentación de la API
+
+Una vez que la aplicación esté ejecutándose, puedes acceder a la documentación interactiva de Swagger en:
+
+**http://localhost:3000/api**
+
+## 🗃️ Estructura del Proyecto
+
+```
+nurse-job-scrapper/
+├── src/
+│   ├── config/          # Configuraciones
+│   ├── job/             # Módulo de trabajos
+│   │   ├── schemas/     # Esquemas de MongoDB
+│   │   ├── job.controller.ts
+│   │   ├── job.service.ts
+│   │   └── job.module.ts
+│   ├── scrapper/        # Módulo del scrapper
+│   │   ├── scrapper.controller.ts
+│   │   ├── scrapper.service.ts
+│   │   └── scrapper.module.ts
+│   ├── app.module.ts
+│   └── main.ts
+├── docker-compose.yml   # Configuración de Docker Compose
+├── Dockerfile          # Imagen de Docker
+└── README.md
+```
+
+## ⚙️ Variables de Entorno
+
+Crear un archivo `.env` con las siguientes variables:
+
+```env
+# Base de datos
+MONGODB_URI=mongodb://mongodb:27017/nurse-jobs
+
+# Servidor
+PORT=3000
+NODE_ENV=development
+
+# Scrapper configuración
+SCRAPPER_INTERVAL=3600000  # 1 hora en milisegundos
+CHROMIUM_PATH=/usr/bin/chromium
+```
+
+## 🧪 Testing
+
+```bash
+# Tests unitarios
+npm run test
+
+# Tests e2e
+npm run test:e2e
+
+# Cobertura de tests
+npm run test:cov
+```
+
+## 🚀 Despliegue en Producción
+
+### Con Docker Compose
+
+1. **Configurar variables de entorno para producción**
+2. **Usar imagen de producción:**
+   ```bash
+   docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+   ```
+
+### Comandos Útiles
+
+```bash
+# Ver logs
+docker-compose logs -f nurse-scrapper
+
+# Reiniciar servicios
+docker-compose restart
+
+# Parar servicios
+docker-compose down
+
+# Parar y eliminar volúmenes
+docker-compose down -v
+```
+
+## 📝 Licencia
+
+Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
+
+## 🆘 Soporte
+
+Si tienes algún problema o pregunta:
+
+1. Revisa la documentación de Swagger en `/api`
+2. Verifica los logs con `docker compose logs -f`
+3. Abre un issue en el repositorio
+
+---
+
+**Desarrollado Como prueba técnica para mostrar mis habilidades**
