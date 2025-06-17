@@ -34,11 +34,11 @@ Un scrapper de trabajos de enfermería construido con NestJS, MongoDB y Docker. 
 
 1. **Clonar el repositorio**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/Romero67/nurse-job-scrapper-back
    cd nurse-job-scrapper
    ```
 
-2. **Crear archivo de variables de entorno**
+2. **Crear archivo de variables de entorno (opcional)**
    ```bash
    cp .env.example .env
    ```
@@ -46,7 +46,7 @@ Un scrapper de trabajos de enfermería construido con NestJS, MongoDB y Docker. 
 
 3. **Construir y ejecutar con Docker Compose**
    ```bash
-   docker compose up --build
+   docker compose up --build -d
    ```
 
 4. **¡Listo!** 🎉
