@@ -38,7 +38,7 @@ Un scrapper de trabajos de enfermería construido con NestJS, MongoDB y Docker. 
    cd nurse-job-scrapper
    ```
 
-2. **Crear archivo de variables de entorno (opcional)**
+2. **Crear archivo de variables de entorno (opcional en caso de usar docker)**
    ```bash
    cp .env.example .env
    ```
