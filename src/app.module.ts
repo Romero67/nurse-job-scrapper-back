@@ -5,6 +5,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ScrapperModule } from './scrapper/scrapper.module';
 import configuration from './config/configuration';
 import { MongooseModule } from '@nestjs/mongoose';
+import { JobModule } from './job/job.module';
 
 @Module({
   imports: [
@@ -23,7 +24,11 @@ import { MongooseModule } from '@nestjs/mongoose';
       load: [configuration],
       isGlobal: true,
     }),
-    ScrapperModule,
+    {
+      module: ScrapperModule,
+      imports: [JobModule],
+    },
+    JobModule,
   ],
   controllers: [AppController],
   providers: [AppService],

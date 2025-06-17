@@ -3,10 +3,12 @@ import { ConfigService } from '@nestjs/config';
 import { InjectModel } from '@nestjs/mongoose';
 import { JobLink } from './schemas/jobLink.schema';
 import { Model } from 'mongoose';
-import { Job } from './schemas/job.schema';
 import puppeteer from 'puppeteer';
 import axios from 'axios';
 import { load } from 'cheerio';
+import { JobService } from 'src/job/job.service';
+import { Job } from 'src/job/schemas/job.schema';
+import { ScrapperInfo } from './schemas/scrapperInfo.schema';
 
 interface StructureDataJob {
   title: string;
@@ -58,10 +60,13 @@ export class ScrapperService implements OnModuleInit {
   private urlJobs: string =
     '/allied-health/radiology-technologist/travel/pennsylvania/';
   private initialized: boolean = false;
+
   constructor(
     private readonly config: ConfigService,
     @InjectModel(JobLink.name) private jobLinkModel: Model<JobLink>,
-    @InjectModel(Job.name) private jobModel: Model<Job>,
+    @InjectModel(ScrapperInfo.name)
+    private scrapperInfoModel: Model<ScrapperInfo>,
+    private readonly jobService: JobService,
   ) {}
 
   onModuleInit() {
@@ -79,7 +84,7 @@ export class ScrapperService implements OnModuleInit {
     try {
       this.logger.debug('ScrappeJobLinks init...');
       const browser = await puppeteer.launch({
-        headless: false,
+        headless: true,
         args: [
           '--no-sandbox',
           '--disable-setuid-sandbox',
@@ -138,7 +143,7 @@ export class ScrapperService implements OnModuleInit {
         let error: any = null;
 
         try {
-          const job = await this.jobModel.findOne({ link: link.link });
+          const job = await this.jobService.findOne({ link: link.link });
 
           if (job) continue;
 
@@ -166,7 +171,9 @@ export class ScrapperService implements OnModuleInit {
             $('[data-qa="Script"]').text(),
           ) as StructureDataJob;
 
-          await this.jobModel.create(this.getDataFromJson(jsonData, link.link));
+          await this.jobService.create(
+            this.getDataFromJson(jsonData, link.link),
+          );
         } catch (err) {
           this.logger.error(`scrappeJobDetails - link ${link.link} - ${err}`);
           error = err;
@@ -191,8 +198,29 @@ export class ScrapperService implements OnModuleInit {
     }
   }
 
+  async getLastUpdate(): Promise<string> {
+    const lastUpdated = await this.scrapperInfoModel.findOne({ _id: 'unique' });
+    return lastUpdated
+      ? lastUpdated.lastUpdated
+          .toLocaleDateString('es-ES', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false,
+          })
+          .replace(',', '')
+      : 'No updates yet';
+  }
+
   async startScraping(): Promise<void> {
     try {
+      await this.scrapperInfoModel.updateOne(
+        { _id: 'unique' },
+        { lastUpdated: new Date() },
+        { upsert: true },
+      );
       await this.scrappeJobLinks();
       await this.scrappeJobDetails();
     } catch (error) {
